@@ -37,7 +37,7 @@ Pdataspace_fault_handler::Pdataspace_fault_handler(Signal_receiver *receiver,
 
 void Pdataspace_fault_handler::fault_handle()
 {
-	//_pdataspace->reattach();
+	_pdataspace->reattach();
 }
 
 
