@@ -1,0 +1,43 @@
+#
+# Build
+#
+
+build { core init proxy }
+
+create_boot_directory
+
+#
+# Generate config
+#
+
+install_config {
+	<config>
+		<parent-provides>
+			<service name="CAP"/>
+			<service name="LOG"/>
+			<service name="PD"/>
+			<service name="CPU"/>
+			<service name="ROM"/>
+			<service name="RM"/>
+			<service name="RAM"/>
+			<service name="SIGNAL"/>
+		</parent-provides>
+		<default-route>
+			<any-service> <parent/> <any-child/> </any-service>
+		</default-route>
+		<start name="proxy_server">
+			<resource name="RAM" quantum="10M"/>
+			<provides> <service name="PRM"/> <service name="PRAM"/> </provides>			
+		</start>
+	</config>
+}
+
+#
+# Boot image
+#
+
+build_boot_image { core init proxy_server proxy_test_client }
+
+append qemu_args " -nographic "
+
+run_genode_until forever
