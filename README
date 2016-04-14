@@ -1,0 +1,64 @@
+Dieses Verzeichnisse beinhaltet die Proxy-Komponente. Um die Proxy-Komponente nutzen zu können, muss es in das Verzeichnis
+/genode/repos integriert werden. Enthalten sind alle KLassen der Proxy-Komponente selbst und alle Klassen, die notwendig sind, 
+um Proxy-Services zu nutzen. Zusätzlich gibt es ein Run-Skipt zur Ausführung der Testszenarios der Bachelorarbeit.
+
+Es existieren folgende Unterverzwichnisse:
+
+/run
+
+Das Verzeichnis run enthält das Run-Skript 'proxy.run'. Es startet das erste Testszenario der Bachelorarbeit.
+Um das zweite Testszenario zu starten, muss die Konfiguration von Init geändert werden. Dazu notwendig ist das
+Einfügen von:
+
+	<start name="proxy_test_client">
+			<resource name="RAM" quantum="1M"/>			
+	</start>
+
+in Zeile von 32 'proxy.run'. Zusätzlich müssen die target.mk Dateien vom Proxy-Server und dem Client angepasst werden, da für
+beide Testszenarien verschiedene main-Methoden existieren.
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+/src
+
+/src/proxy/server enthält die Dateien :
+
+- Pdataspace_component.cc
+- Pram_session_component.cc
+- Prm_session_component.cc
+- main.cc
+- main_two.cc
+- target.mk
+
+Je nach dem, welches Testszenario ausgeführt werden soll, muss die jeweilige Main-Methode verwendet werden. Die
+Datei main.cc beinhaltet den Code des ersten Szenarios, main_two.cc den des zweiten.
+
+
+/src/proxy/server/include enthält die Header-Dateien:
+
+- Prm_session_component.h
+- Pram_session_component.h
+- Pdataspace_component.h
+- Pram_root.h 
+- Prm_root.h
+
+Die Datei Prm_session_component.h enthält zusätzlich die Definition der Klasse Prm_attachment.
+Pdataspace_fault_handler wird in der Datei Pdataspace_component definiert.
+
+
+/src/proxy/client enthält die beiden Main-Methoden der Client-Komponente, sowie die zugehörige target.mk Datei. 
+
+Je nach dem, welches Testszenario ausgeführt werden soll, muss die jeweilige Main-Methode verwendet werden. Die Datei main.cc beinhaltet
+den Code des ersten Szenarios, main_two.cc den des zweiten.
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+/include
+/include/pram_session
+/include/prm_session
+/include/pdataspace
+
+
+Die Unterverzeichnisse von /include enthalten die jeweiligen Implmentierungen der Capabilities, Session-Interfaces, der Clients und 
+der Connections. Diese werden von einer Client-Komponente benötigt, die kein Kind von Proxy ist. 
